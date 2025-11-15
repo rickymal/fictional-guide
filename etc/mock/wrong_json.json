@@ -1,0 +1,303 @@
+[
+  {
+    "name": 12345,
+    "age": 25,
+    "salary": 3000.5,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1999-05-20",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "João Silva",
+    "age": "vinte e cinco",
+    "salary": 3000.5,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1999-05-20",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Maria Santos",
+    "age": 30,
+    "salary": "três mil",
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1999-05-20",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Carlos Oliveira",
+    "age": 35,
+    "salary": 4000.75,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1999-05-20",
+    "hora_registro": "14:30:00",
+    "tags": "work,tech"
+  },
+  {
+    "name": "",
+    "age": 28,
+    "salary": 3500.25,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1996-08-12",
+    "hora_registro": "14:30:00",
+    "tags": ["work"]
+  },
+  {
+    "name": "   ",
+    "age": 32,
+    "salary": 4200.0,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1992-03-18",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Ana@#$%",
+    "age": 29,
+    "salary": 3800.5,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1995-11-30",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "A",
+    "age": 27,
+    "salary": 3200.75,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1997-07-22",
+    "hora_registro": "14:30:00",
+    "tags": ["work"]
+  },
+  {
+    "name": "Pedro",
+    "age": 40,
+    "salary": 5000.0,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "15/08/1984",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Fernanda",
+    "age": 33,
+    "salary": 4500.25,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1991-09-05",
+    "hora_registro": "25:70:99",
+    "tags": ["work", "tech"]
+  },
+  {
+    "age": 26,
+    "salary": 3100.5,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1998-04-14",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Roberto",
+    "salary": 4700.75,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1989-12-03",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Juliana",
+    "age": 31,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1993-06-25",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Lucas",
+    "age": 24,
+    "salary": 2900.0,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "2000-02-28",
+    "hora_registro": "14:30:00"
+  },
+  {
+    "name": "Patrícia",
+    "age": 38,
+    "salary": 5200.5,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1986-10-08",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"],
+    "campo_extra": "valor_inesperado",
+    "outro_campo": 12345
+  },
+  {
+    "name": "Ricardo",
+    "age": 45,
+    "salary": 6000.0,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1979-01-17",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"],
+    "id": "ABC123",
+    "timestamp": 1705330200
+  },
+  {
+    "name": "Sofia",
+    "age": 22,
+    "salary": 2700.25,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "2002-07-19",
+    "hora_registro": "14:30:00",
+    "tags": []
+  },
+  {
+    "name": "Diego",
+    "age": 36,
+    "salary": 4800.75,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1988-03-11",
+    "hora_registro": "14:30:00",
+    "tags": [123, 456]
+  },
+  {
+    "name": "Camila",
+    "age": 29,
+    "salary": 3900.0,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1995-05-26",
+    "hora_registro": "14:30:00",
+    "tags": ["work", null, "tech"]
+  },
+  {
+    "name": "Eduardo",
+    "age": -5,
+    "salary": 3000.5,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "2029-05-20",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Tatiane",
+    "age": 150,
+    "salary": -1000.0,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1874-11-02",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Marcelo",
+    "age": 0,
+    "salary": 0.0,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "2024-01-15",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Vanessa",
+    "age": 34,
+    "salary": 4400.25,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1990-08-09",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"],
+    "codigo": "ABC123"
+  },
+  {
+    "name": "Rafael",
+    "age": 41,
+    "salary": 5500.75,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1983-04-16",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"],
+    "codigo": 123.45
+  },
+  {
+    "name": null,
+    "age": null,
+    "salary": null,
+    "data_criacao": null,
+    "data_nascimento": null,
+    "hora_registro": null,
+    "tags": null
+  },
+  {
+    "name": true,
+    "age": false,
+    "salary": [1000],
+    "data_criacao": 20240115,
+    "data_nascimento": { "ano": 1990 },
+    "hora_registro": 143000,
+    "tags": { "tag1": "work" }
+  },
+  {
+    "nome_completo": "Gabriela Costa",
+    "idade": 28,
+    "salario": 3600.5,
+    "criado_em": "2024-01-15",
+    "nascimento": "1996-02-14",
+    "hora": "14:30:00",
+    "categorias": ["work", "tech"]
+  },
+  {
+    "id": 1,
+    "user": "Hugo Mendes",
+    "years": 39,
+    "income": 5100.0,
+    "created_at": "2024-01-15",
+    "birth_date": "1985-09-23",
+    "time": "14:30:00",
+    "labels": ["work", "tech"]
+  },
+  {
+    "name": "José María Niño",
+    "age": 37,
+    "salary": 4600.25,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1987-12-07",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "小明",
+    "age": 26,
+    "salary": 3300.75,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1998-03-21",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Иван Петров",
+    "age": 43,
+    "salary": 4900.0,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1981-06-13",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Test\tTab\nNewline",
+    "age": 30,
+    "salary": 4000.5,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1994-10-29",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"]
+  },
+  {
+    "name": "Ana Silva",
+    "age": 28,
+    "salary": 3500.5,
+    "data_criacao": "2024-01-15",
+    "data_nascimento": "1996-05-20",
+    "hora_registro": "14:30:00",
+    "tags": ["work", "tech"],
+    "codigo": 12345
+  }
+]

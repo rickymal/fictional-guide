@@ -1,12 +1,9 @@
-import json
 import logging
 import os
 import signal
 import subprocess
-import time
 from typing import List, Optional, Tuple
 
-import pytest
 from fastapi.testclient import TestClient
 
 # Configuração do logging
