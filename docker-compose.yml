@@ -1,0 +1,74 @@
+services:
+  fastapi:
+    build: .
+    volumes:
+      - .:/app
+      - duckdb_data:/data
+    tty: true
+    init: true
+
+  consumer:
+    build: .
+    volumes:
+      - .:/app
+    init: true
+
+  minio:
+    image: quay.io/minio/minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - ./storage/minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    container_name: minio-server
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq_server
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # para os testes no CI apenas.
+  tests:
+    build: .
+    volumes:
+      - .:/app
+
+    environment:
+      MINIO_HOST: minio
+      RABBITMQ_HOST: rabbitmq
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+
+    command: ["pytest", "-v"]
+    depends_on:
+      minio:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+volumes:
+  duckdb_data:
+  rabbitmq_data:
