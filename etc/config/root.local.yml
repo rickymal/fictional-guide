@@ -1,0 +1,16 @@
+bucket:
+  endpoint: localhost:9000
+  username: minioadmin
+  password: minioadmin
+broker:
+  host: localhost
+  username: admin
+  password: admin
+  queue_name: main_queue
+  queue_retry: retry_queue
+  queue_dlq: queue_dlq
+  exchange: defaultEx
+  queue_ttl_milliseconds: 10000
+  force-recreate: true
+storage:
+  db_file: main.duckdb

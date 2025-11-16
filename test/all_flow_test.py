@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 # Schema de dados
 SCHEMA: dict[str, object] = {
@@ -36,7 +36,7 @@ def run_process(command: List[str], timeout: int = 3) -> Tuple[Optional[int], st
     seja encerrado se estourar o timeout.
     Retorna (returncode, stdout, stderr)
     """
-    logger.info(f"Executando (PGID): {' '.join(command)}")
+    log.info(f"Executando (PGID): {' '.join(command)}")
 
     process = None
 
@@ -52,38 +52,38 @@ def run_process(command: List[str], timeout: int = 3) -> Tuple[Optional[int], st
 
         stdout, stderr = process.communicate(timeout=timeout)
 
-        logger.debug(f"Comando finalizado. Código de saída: {process.returncode}")
+        log.debug(f"Comando finalizado. Código de saída: {process.returncode}")
         if stderr:
-            logger.warning(f"Stderr do comando: {stderr}")
+            log.warning(f"Stderr do comando: {stderr}")
         return process.returncode, stdout, stderr
 
     except subprocess.TimeoutExpired as e:
-        logger.warning(
+        log.warning(
             f"Timeout: comando {command} excedeu {timeout}s. Encerrando grupo..."
         )
 
         # Encerra o grupo inteiro de processos
         try:
             os.killpg(process.pid, signal.SIGKILL)
-            logger.info(
+            log.info(
                 f"Grupo de processos (PGID: {process.pid}) encerrado com SIGKILL."
             )
         except ProcessLookupError:
-            logger.debug("Processo já estava morto, não foi preciso 'killpg'.")
+            log.debug("Processo já estava morto, não foi preciso 'killpg'.")
         except Exception as kill_e:
-            logger.error(f"Erro ao tentar 'killpg' {process.pid}: {kill_e}")
+            log.error(f"Erro ao tentar 'killpg' {process.pid}: {kill_e}")
 
         # Obtém saída parcial
         partial_stdout = e.stdout or ""
         partial_stderr = e.stderr or ""
 
         if partial_stderr:
-            logger.warning(f"Stderr parcial (antes do timeout): {partial_stderr}")
+            log.warning(f"Stderr parcial (antes do timeout): {partial_stderr}")
 
         return None, partial_stdout, partial_stderr
 
     except Exception as e:
-        logger.exception(f"Erro ao executar {command}: {e}")
+        log.exception(f"Erro ao executar {command}: {e}")
         # Garante que o processo não fique zumbi
         if process and hasattr(process, "pid"):
             try:
@@ -107,19 +107,19 @@ class TestAllFlow:
     def _prepare_infrastructure(self) -> None:
         """Prepara a infraestrutura necessária para o teste"""
         # Preparar bucket
-        logger.info("Preparando bucket...")
+        log.info("Preparando bucket...")
         return_code, stdout, stderr = run_process(["make", "prepare_bucket"], 10)
         if return_code != 0:
-            logger.error(f"Falha no prepare_bucket. stdout: {stdout}, stderr: {stderr}")
+            log.error(f"Falha no prepare_bucket. stdout: {stdout}, stderr: {stderr}")
             raise Exception(
                 f"Falha ao preparar bucket. Código de retorno: {return_code}"
             )
 
         # Preparar storage
-        logger.info("Preparando storage...")
+        log.info("Preparando storage...")
         return_code, stdout, stderr = run_process(["make", "prepare_storage"], 10)
         if return_code != 0:
-            logger.error(
+            log.error(
                 f"Falha no prepare_storage. stdout: {stdout}, stderr: {stderr}"
             )
             raise Exception(
@@ -128,24 +128,24 @@ class TestAllFlow:
 
     def _setup_schema(self, test_client: TestClient) -> None:
         """Configura o schema no sistema"""
-        logger.info("Inserindo schema...")
+        log.info("Inserindo schema...")
         response = test_client.put("/schema", json=SCHEMA)
         assert response.status_code == 201
-        logger.info("Schema inserido com sucesso")
+        log.info("Schema inserido com sucesso")
 
     def _execute_validation_flow(self, test_client: TestClient, bm: object) -> None:
         """Executa o fluxo de validação completo"""
         # Contagem inicial de arquivos gold
         qtd_gold = sum(1 for _ in bm.iter_bucket_by_prefix_key("gold", "rfb/json"))
-        logger.info(f"Quantidade inicial de arquivos gold: {qtd_gold}")
+        log.info(f"Quantidade inicial de arquivos gold: {qtd_gold}")
 
         # Disparar job de validação
-        logger.info("Iniciando job de validação...")
+        log.info("Iniciando job de validação...")
         response = test_client.post("/job/validate/namespace/rfb.json")
         assert response.status_code == 200
 
         # Executar consumer
-        logger.info("Executando consumer...")
+        log.info("Executando consumer...")
         return_code, stdout, stderr = run_process(["make", "run_consumer"], 15)
 
         # Verificar resultados da validação
@@ -160,23 +160,23 @@ class TestAllFlow:
             1 for _ in bm.iter_bucket_by_prefix_key("validated", "rfb/json")
         )
 
-        logger.info(f"Arquivos quarantine: {qtd_quarantine}")
-        logger.info(f"Arquivos validated: {qtd_validated}")
+        log.info(f"Arquivos quarantine: {qtd_quarantine}")
+        log.info(f"Arquivos validated: {qtd_validated}")
 
         assert expected_total == qtd_quarantine + qtd_validated
-        logger.info("Validação de quantidade de arquivos bem-sucedida")
+        log.info("Validação de quantidade de arquivos bem-sucedida")
 
     def _verify_metrics(self, test_client: TestClient) -> None:
         """Verifica as métricas do sistema"""
-        logger.info("Verificando métricas...")
+        log.info("Verificando métricas...")
         response = test_client.get("/metrics")
         assert response.status_code == 200
 
         metrics = response.json()
-        logger.info(f"Métricas obtidas: {metrics}")
+        log.info(f"Métricas obtidas: {metrics}")
 
         assert isinstance(metrics, list)
         assert len(metrics) == 2
         assert {"new_bucket": "validated", "total": 18} in metrics
         assert {"new_bucket": "quarantine", "total": 20} in metrics
-        logger.info("Teste de métricas concluído com sucesso")
+        log.info("Teste de métricas concluído com sucesso")

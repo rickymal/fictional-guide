@@ -1,9 +1,15 @@
 import json
 from typing import Callable
-
 import pika
-
 from domain import port
+
+
+import logging
+# Configuração do logging
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+log = logging.getLogger(__name__)
 
 
 class BrokerAdapter(port.IBrokerAdapter):
@@ -21,7 +27,6 @@ class BrokerAdapter(port.IBrokerAdapter):
         self.setup_infrastructure(env)
 
     def setup_infrastructure(self, env: dict):
-        """Configura toda a infraestrutura de filas, exchanges e bindings"""
 
         # Exchange principal
         self.exchange_name = env["exchange"]
@@ -81,9 +86,6 @@ class BrokerAdapter(port.IBrokerAdapter):
         )
 
     def publish_message(self, routing_key: str, message: str, count: int = 0) -> None:
-        """
-        Implementação concreta usando Pika com header count
-        """
         if not isinstance(message, str):
             raise ValueError("incorrect type ", type(message))
 
@@ -99,13 +101,10 @@ class BrokerAdapter(port.IBrokerAdapter):
                 ),
             )
         except Exception as e:
-            print(f"Erro ao publicar no RabbitMQ: {e}")
+            log.info(f"Erro ao publicar no RabbitMQ: {e}")
             raise e
 
     def consume_sync(self, qtd: int) -> list:
-        """
-        Consumo síncrono de mensagens
-        """
         messages = []
 
         for _ in range(qtd):
@@ -133,7 +132,7 @@ class BrokerAdapter(port.IBrokerAdapter):
 
     def stop_after_duration(self, duration):
         time.sleep(duration)
-        print(f"⏰ Parando consumo após {duration} segundos")
+        log.info(f"⏰ Parando consumo após {duration} segundos")
         # Para o consumo (depende da sua implementação do ba.consume)
         if hasattr(ba, "stop_consuming"):
             ba.stop_consuming()
@@ -146,10 +145,6 @@ class BrokerAdapter(port.IBrokerAdapter):
         callback_dlq: Callable,
         duration: int | None = None,
     ):
-        """
-        Consumo assíncrono com callbacks para processamento normal e DLQ
-        """
-
         def message_handler(ch, method, properties, body):
             try:
                 message = json.loads(body)
@@ -171,7 +166,7 @@ class BrokerAdapter(port.IBrokerAdapter):
                     callback_default(message_wrapper)
 
             except Exception as e:
-                print(f"Erro no processamento da mensagem: {e}")
+                log.info(f"Erro no processamento da mensagem: {e}")
                 ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
         self.channel.basic_consume(
@@ -185,11 +180,10 @@ class BrokerAdapter(port.IBrokerAdapter):
                 target=self.stop_after_duration, daemon=True, args=(duration)
             )
             stop_thread.start()
-        print("Iniciando consumo assíncrono...")
+        log.info("Iniciando consumo assíncrono...")
         self.channel.start_consuming()
 
     def acknowledge_message(self, delivery_tag: int):
-        """Confirma o processamento da mensagem"""
         self.channel.basic_ack(delivery_tag=delivery_tag)
 
     def reject_message(
@@ -209,10 +203,6 @@ class BrokerAdapter(port.IBrokerAdapter):
 
 
 class AmqpDelivery:
-    """
-    Wrapper para a mensagem com métodos de acknowledge
-    """
-
     def __init__(
         self,
         message: dict,
@@ -231,11 +221,9 @@ class AmqpDelivery:
         return self.message
 
     def success(self):
-        """Confirma o processamento bem-sucedido"""
         self.broker_adapter.acknowledge_message(self.delivery_tag)
 
     def failure(self):
-        """Marca como falha e envia para retry"""
         self.broker_adapter.reject_message(
             delivery_tag=self.delivery_tag,
             count=self.count,
