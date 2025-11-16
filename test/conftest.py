@@ -1,5 +1,5 @@
 import pytest
-from config import loader
+from etc.config import loader
 from fastapi.testclient import TestClient
 
 

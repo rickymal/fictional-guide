@@ -7,3 +7,4 @@ wheels/
 storage/
 minio-data/
 .venv
+.vscode/

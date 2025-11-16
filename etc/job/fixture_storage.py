@@ -1,8 +1,8 @@
 
-from config import loader
+from etc.config import loader
 from infrastructure.storage import StorageConnectionAdapter
 from infrastructure import repository
-env = loader.load_env(['./config/root.local.yml'])
+env = loader.load_env(['./etc/config/root.local.yml'])
 storage_connection = StorageConnectionAdapter.from_duckdb_memory(env['storage'])
 from domain import constants
 

@@ -2,7 +2,7 @@ import glob
 import json
 import uuid
 
-from config import loader
+from etc.config import loader
 
 from infrastructure import bucket, storage
 

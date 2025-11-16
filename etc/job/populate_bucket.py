@@ -8,11 +8,11 @@ import json
 import uuid
 import glob
 
-from config import loader
+from etc.config import loader
 from infrastructure import bucket, storage
 # Inicializa o BucketManager
-env = loader.load_env(['./config/root.local.yml'])
-json_files = glob.glob("./job/mock/*.json")
+env = loader.load_env(['./etc/config/root.local.yml'])
+json_files = glob.glob("./etc/mock/*.json")
 bm = bucket.BucketAdapter.from_minio_client(env['bucket'])
 
 import logging
@@ -43,7 +43,7 @@ for file_path in json_files:
 
 # --- LÓGICA PARA ARQUIVOS CSV ---
 # Encontra todos os arquivos .csv na pasta mock
-csv_files = glob.glob("./job/mock/*.csv")
+csv_files = glob.glob("./etc/mock/*.csv")
 
 log.info(f"Encontrados {len(csv_files)} arquivos CSV.")
 

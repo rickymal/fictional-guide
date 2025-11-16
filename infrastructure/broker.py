@@ -12,8 +12,8 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
-from config import loader
-env_g = loader.load_env(['./config/root.local.yml'])
+from etc.config import loader
+env_g = loader.load_env(['./etc/config/root.local.yml'])
 
 class BrokerAdapter(port.IBrokerAdapter):
     def __init__(self, env: dict):

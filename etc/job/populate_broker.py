@@ -2,10 +2,10 @@ import json
 from infrastructure import storage
 from infrastructure import repository
 from infrastructure import broker
-from config import loader
+from etc.config import loader
 from infrastructure import bucket, storage
 # Inicializa o BucketManager
-env = loader.load_env(['./config/root.local.yml'])
+env = loader.load_env(['./etc/config/root.local.yml'])
 
 
 bm = bucket.BucketAdapter.from_minio_client(env['bucket'])

@@ -2,7 +2,7 @@ import logging
 from typing import Any, Dict
 import fastapi
 import uvicorn
-from config import loader
+from etc.config import loader
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
@@ -29,7 +29,7 @@ log = logging.getLogger(__name__)
 
 def get_dependencies() -> Dict[str, Any]:
     log.info("Carregando dependências...")
-    env = loader.load_env(["./config/root.local.yml"])
+    env = loader.load_env(["./etc/config/root.local.yml"])
     return env
 
 

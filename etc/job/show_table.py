@@ -1,6 +1,6 @@
 
-from config import loader
-env = loader.load_env(['./config/root.local.yml'])
+from etc.config import loader
+env = loader.load_env(['./etc/config/root.local.yml'])
 
 from infrastructure import storage
 from infrastructure import repository

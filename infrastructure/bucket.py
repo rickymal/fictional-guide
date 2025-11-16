@@ -6,12 +6,12 @@ from domain import abc, error, port
 
 log = logging.getLogger(__name__)
 
-from config import loader
-env_g = loader.load_env(['./config/root.local.yml'])
+from etc.config import loader
+env_g = loader.load_env(['./etc/config/root.local.yml'])
 
 
 class BucketAdapter(port.IBucketAdapter):
-    def __init__(self, client: abc.IMinioLike):
+    def __init__(self, client):
         super().__init__(client)
         self.client = client
 

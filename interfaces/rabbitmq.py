@@ -3,7 +3,7 @@ import threading
 import time
 from typing import Any, Dict, Optional
 
-from config import loader
+from etc.config import loader
 
 from application import usecase, validator
 from domain import port
@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 
 def get_dependencies() -> Dict[str, Any]:
     log.info("Carregando dependências...")
-    env = loader.load_env(["./config/root.local.yml"])
+    env = loader.load_env(["./etc/config/root.local.yml"])
     return env
 
 
