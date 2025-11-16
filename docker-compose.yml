@@ -59,7 +59,7 @@ services:
       MINIO_ROOT_PASSWORD: minioadmin
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
-    command: ['pytest', '-v']
+    command: ['make', 'test_all']
     depends_on:
       minio:
         condition: service_healthy

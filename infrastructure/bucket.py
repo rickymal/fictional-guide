@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 from typing import Iterator
 from minio.error import S3Error
-from domain import abc, error, port
+from domain import error, port
 
 log = logging.getLogger(__name__)
 

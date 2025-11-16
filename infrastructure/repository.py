@@ -5,9 +5,10 @@ import uuid
 
 from fastapi.encoders import jsonable_encoder
 
-from domain import constants, port
+from domain import port
 
-
+from etc.config import loader
+env = loader.load_env(["./etc/config/root.local.yml"])
 # Configuração do logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -19,7 +20,7 @@ class QueryWriter:
     def run_sql_in_file(
         conn: port.IStorageSession, filename: str, placeholder: list[str]
     ):
-        path = os.path.join(constants.QUERY_PATH, filename)
+        path = os.path.join(env['app']['query_path'], filename)
         log.debug(f"reading: {path}")
         log.info(os.listdir())
         with open(path, "r") as filename:
@@ -84,7 +85,7 @@ class SchemaRegistry:
         self,
         conn: port.IStorageSession,
     ):
-        self.writter.run_sql_in_file(conn, "migration_2025_11_10.sql", [])
+        self.writter.run_sql_in_file(conn, env['app']['migration'], [])
 
     def insert_schema(self, conn: port.IStorageSession, schema: str) -> str:
         uuid_str = str(uuid.uuid4())

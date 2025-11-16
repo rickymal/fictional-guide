@@ -21,10 +21,6 @@ class IBrokerAdapter(ABC):
         ...
 
     @abstractmethod
-    def stop_after_duration(self, duration):
-        ...
-
-    @abstractmethod
     def consume_blocking(self, callback_default: object, callback_dlq: object, duration: object=None):
         ...
 

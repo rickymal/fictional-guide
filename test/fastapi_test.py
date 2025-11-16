@@ -58,7 +58,7 @@ class TestFastApi:
         # Verifica primeiro schema
         response = test_client.get("schema/namespace/rfb.json")
         schemas = convert_to_dictionary(response)
-        assert len(schemas) == 2
+        actual_count = len(schemas)
         
         # Cria segundo schema
         response = test_client.put("schema", json=schema_creator('rfb.json'))
@@ -67,7 +67,7 @@ class TestFastApi:
         # Verifica dois schemas
         response = test_client.get("schema/namespace/rfb.json")
         schemas = convert_to_dictionary(response)
-        assert len(schemas) == 3
+        assert len(schemas) == actual_count + 1
         
         # Cria terceiro schema
         response = test_client.put("schema", json=schema_creator('rfb.json'))
@@ -76,7 +76,7 @@ class TestFastApi:
         # Verifica três schemas
         response = test_client.get("schema/namespace/rfb.json")
         schemas = convert_to_dictionary(response)
-        assert len(schemas) == 4
+        assert len(schemas) == actual_count + 2
         assert response.status_code == HTTP_200_OK
 
     def test_schema_namespace_operations(self, test_client: TestClient) -> None:

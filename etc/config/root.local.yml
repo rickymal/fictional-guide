@@ -13,13 +13,13 @@ broker:
   queue_ttl_milliseconds: 10000
   force-recreate: true
 storage:
-  db_file: main.duckdb
+  db_file: data/main.duckdb
 app:
   source_bucket: gold
   validate_bucket: validated
   quarantine_bucket: quarantine
   query_path: infrastructure/query
-  migration: migration_2025_11_10.sql
+  migration: migration_2025_11_11.sql
 
   # pode ser qualquer combinação app.* por causa da configuração do rabbitmq
   source_router: app.mauler

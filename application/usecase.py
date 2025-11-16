@@ -1,5 +1,5 @@
 from domain import dto
-from domain.port import IBrokerAdapter, IBucketAdapter, IStorageConnection
+from domain.port import IBrokerAdapter, IBucketAdapter, IStorageConnectionAdapter
 from domain import error
 from infrastructure import repository
 import logging
@@ -21,20 +21,20 @@ def schedule_schema_validation(bucket_name: str, rm: IBrokerAdapter) -> str:
 
 
 def create_schema(
-    schema: dto.SchemaCreateDto, dm: IStorageConnection, ds: repository.SchemaRegistry
+    schema: dto.SchemaCreateDto, dm: IStorageConnectionAdapter, ds: repository.SchemaRegistry
 ) -> str:
     schema_data = schema.model_dump(exclude_unset=True)
     with dm.connect() as conn:
         return ds.insert_schema(conn, schema_data)
 
 
-def delete_all_schema(dm: IStorageConnection, ds: repository.SchemaRegistry) -> str:
+def delete_all_schema(dm: IStorageConnectionAdapter, ds: repository.SchemaRegistry) -> str:
     with dm.connect() as conn:
         return ds.delete_schema(conn)
 
 
 def delete_some_schema(
-    dm: IStorageConnection, ds: repository.SchemaRegistry, namespace: str
+    dm: IStorageConnectionAdapter, ds: repository.SchemaRegistry, namespace: str
 ) -> str:
     with dm.connect() as conn:
         return ds.delete_schema(conn, namespace)
@@ -42,27 +42,27 @@ def delete_some_schema(
 
 # namespace
 def get_all_schemas(
-    dm: IStorageConnection, ds: repository.SchemaRegistry
+    dm: IStorageConnectionAdapter, ds: repository.SchemaRegistry
 ) -> list[dict[str, object]]:
     with dm.connect() as conn:
         return ds.get_all(conn=conn)
 
 
 def get_schemas_by_namespace(
-    namespace: str, dm: IStorageConnection, ds: repository.SchemaRegistry
+    namespace: str, dm: IStorageConnectionAdapter, ds: repository.SchemaRegistry
 ) -> list[dict[str, object]]:
     with dm.connect() as conn:
         return ds.get_avro_schema_by_namespace(conn=conn, namespace=namespace)
 
 
-def get_metrics(dm: IStorageConnection, ds: repository.MoveRegistry):
+def get_metrics(dm: IStorageConnectionAdapter, ds: repository.MoveRegistry):
     with dm.connect() as conn:
         return ds.get_metrics(conn=conn)
     pass
 
 def avaliate_data(
     data: dict,
-    dm: IStorageConnection,
+    dm: IStorageConnectionAdapter,
     ds: repository.SchemaRegistry,
     bm: IBucketAdapter,
     ic: validator.ValidatorFactory,

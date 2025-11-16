@@ -14,7 +14,7 @@ def test_client():
 
 @pytest.fixture(scope="session")
 def env():
-    return loader.load_env(["config/root.local.yml"])
+    return loader.load_env(["etc/config/root.local.yml"])
 
 
 @pytest.fixture(scope="session")
