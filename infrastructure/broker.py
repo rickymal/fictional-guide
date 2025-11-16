@@ -2,7 +2,7 @@ import json
 from typing import Callable
 import pika
 from domain import port
-
+import time
 
 import logging
 # Configuração do logging
@@ -130,15 +130,6 @@ class BrokerAdapter(port.IBrokerAdapter):
 
         return messages
 
-    def stop_after_duration(self, duration):
-        time.sleep(duration)
-        log.info(f"⏰ Parando consumo após {duration} segundos")
-        # Para o consumo (depende da sua implementação do ba.consume)
-        if hasattr(ba, "stop_consuming"):
-            ba.stop_consuming()
-        # Ou se não tiver método stop, podemos usar uma flag
-        self.channel.stop_consuming()
-
     def consume_blocking(
         self,
         callback_default: Callable,
@@ -173,13 +164,6 @@ class BrokerAdapter(port.IBrokerAdapter):
             queue=self.main_queue, on_message_callback=message_handler, auto_ack=False
         )
 
-        if duration is not None:
-            import threading
-
-            stop_thread = threading.Thread(
-                target=self.stop_after_duration, daemon=True, args=(duration)
-            )
-            stop_thread.start()
         log.info("Iniciando consumo assíncrono...")
         self.channel.start_consuming()
 
