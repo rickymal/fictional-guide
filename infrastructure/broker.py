@@ -12,6 +12,9 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
+from config import loader
+env_g = loader.load_env(['./config/root.local.yml'])
+
 class BrokerAdapter(port.IBrokerAdapter):
     def __init__(self, env: dict):
         # Configuração técnica pura (Infra)
@@ -212,5 +215,5 @@ class AmqpDelivery:
             delivery_tag=self.delivery_tag,
             count=self.count,
             message=self.message,
-            routing_key="app.retry",
+            routing_key=env_g['app']['retry_router'],
         )

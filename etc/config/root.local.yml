@@ -14,3 +14,14 @@ broker:
   force-recreate: true
 storage:
   db_file: main.duckdb
+app:
+  source_bucket: gold
+  validate_bucket: validated
+  quarantine_bucket: quarantine
+  query_path: infrastructure/query
+  migration: migration_2025_11_10.sql
+
+  # pode ser qualquer combinação app.* por causa da configuração do rabbitmq
+  source_router: app.mauler
+  retry_router: app.retry
+

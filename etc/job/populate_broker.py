@@ -12,7 +12,7 @@ bm = bucket.BucketAdapter.from_minio_client(env['bucket'])
 dm = storage.StorageConnectionAdapter.from_duckdb_memory(env['storage'])
 ds = repository.SchemaRegistry()
 br = broker.BrokerAdapter(env['broker'])
-br.publish_message('app.mauler', json.dumps({'namespace' : 'rfb.json'}, ensure_ascii=False))
+br.publish_message(env['app']['source_router'], json.dumps({'namespace' : 'rfb.json'}, ensure_ascii=False))
 
 with dm.create_transaction() as conn:
     ds.initialize_schema(conn)

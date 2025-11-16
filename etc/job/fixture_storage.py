@@ -8,4 +8,4 @@ from domain import constants
 
 
 with storage_connection.connect() as conn:
-    repository.QueryWriter.run_sql_in_file(conn, 'migration_2025_11_10.sql', [])
+    repository.QueryWriter.run_sql_in_file(conn, env['app']['migration'], [])

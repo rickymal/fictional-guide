@@ -13,7 +13,6 @@ from infrastructure import bucket, storage
 # Inicializa o BucketManager
 env = loader.load_env(['./config/root.local.yml'])
 json_files = glob.glob("./job/mock/*.json")
-env = loader.load_env(['./config/root.local.yml'])
 bm = bucket.BucketAdapter.from_minio_client(env['bucket'])
 
 import logging
@@ -36,7 +35,7 @@ for file_path in json_files:
         for sample in samples:
             # Salva cada registro como um arquivo separado no bucket
             bm.put_object(
-                "gold",
+                env['app']['source_bucket'],
                 f"rfb/json/sample_{uuid.uuid4()}.json",
                 json.dumps(sample, indent=2, ensure_ascii=False),
                 content_type="application/json"
@@ -56,7 +55,7 @@ for file_path in csv_files:
         # Convertemos a linha do CSV para JSON para manter o padrão no bucket
         # (Ajuste o caminho 'rfb/csv/' se preferir separar dos jsons originais)
         bm.put_object(
-            "gold",
+            env['app']['source_bucket'],
             f"rfb/csv/sample_{uuid.uuid4()}.csv",
             reader,
             content_type="application/csv"

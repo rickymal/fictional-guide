@@ -1,6 +1,12 @@
 build:
 	echo "Hello, World!"
 
+test_all:
+	python -m job.fixture_storage
+	pytest test/validation_test.py
+	pytest test/schema_val_test.py
+	pytest test/all_flow_test.py
+	pytest test/fastapi_test.py
 
 abc:
 	uv run --active python -m etc.job.py2abc --file_path "./infrastructure/storage.py" --class_name StorageConnectionAdapter --output_path "./domain/port/i_storage_connection_adapter.py"

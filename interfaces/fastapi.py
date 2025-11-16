@@ -10,15 +10,15 @@ from application import usecase
 from domain import dto, error, port
 from infrastructure import repository
 from infrastructure.broker import BrokerAdapter
-from infrastructure.storage import StorageConnectionAdapterfrom starlette.status import (
+from infrastructure.storage import StorageConnectionAdapter
+
+from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_404_NOT_FOUND,
     HTTP_422_UNPROCESSABLE_CONTENT,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
-
-
 
 # Configuração do logging
 logging.basicConfig(
@@ -42,7 +42,6 @@ class RouterBuilder:
         self._setup_routes()
 
     def _setup_dependencies(self) -> None:
-        log.info("Configurando dependências...")
         self.broker_service: port.IBrokerAdapter = BrokerAdapter(
             self.env.get("broker", None)
         )
@@ -162,7 +161,6 @@ class RouterBuilder:
             "/schema/all", summary="Lista todos os schemas", tags=["Schemas"]
         )
         async def get_all_schemas():
-            """Retorna todos os schemas cadastrados"""
             log.info("Recebida requisição para listar todos os schemas")
             try:
                 schemas = usecase.get_all_schemas(
@@ -183,7 +181,6 @@ class RouterBuilder:
             tags=["Schemas"],
         )
         async def get_schemas_by_namespace(namespace: str):
-            """Retorna schemas filtrados por namespace"""
             log.info(
                 f"Recebida requisição para buscar schemas do namespace: {namespace}"
             )
@@ -213,7 +210,6 @@ class RouterBuilder:
             tags=["Jobs"],
         )
         async def validate_schema_endpoint(namespace: str):
-            """Agenda a validação de schema para os arquivos em um bucket específico"""
             log.info(
                 f"Recebida requisição para validar schema do namespace: {namespace}"
             )
@@ -235,7 +231,6 @@ class RouterBuilder:
                 raise HTTPException(status_code=HTTP_404_NOT_FOUND)
 
     def _setup_metrics_routes(self) -> None:
-        """Configura rotas relacionadas a métricas"""
 
         @self.router.get(
             "/metrics",
@@ -259,19 +254,16 @@ class RouterBuilder:
                 raise HTTPException(status_code=HTTP_404_NOT_FOUND)
 
     def get_router(self) -> APIRouter:
-        """Retorna o router configurado"""
         return self.router
 
 
 def setup_router(env: Dict[str, Any] | None = None, prefix: str = "") -> APIRouter:
-    """Função de conveniência para configurar o router"""
     log.info(f"Configurando router com prefixo: {prefix}")
     builder = RouterBuilder(env, prefix)
     return builder.get_router()
 
 
 def setup_fastapi() -> fastapi.FastAPI:
-    """Configura e retorna a aplicação FastAPI"""
     log.info("Inicializando aplicação FastAPI")
     api_router = setup_router()
     api = fastapi.FastAPI(
